@@ -16,11 +16,20 @@ export const Container = ({}: containerProps) => {
 		{ elevatorId: 2, currentFloor: 1, destinationFloor: 1, isMoving: false },
 		{ elevatorId: 3, currentFloor: 1, destinationFloor: 1, isMoving: false },
 	]);
+	const [disabled, setDisabled] = useState<boolean>(false);
 
 	const handleFloorClick = (value: number) => {
 		const selectedElevator = selectElevator();
 		if (selectedElevator) {
 			updateElevatorState(selectedElevator.elevatorId, value);
+		}
+		//이미 선택된 value이면 return
+		if (selectedElevator?.currentFloor === value) return;
+		//모든 엘리베이터가 움직이고 있으면 버튼 disable
+		if (elevatorStates.every(elevator => elevator.isMoving)) {
+			setDisabled(true);
+		} else {
+			setDisabled(false);
 		}
 	};
 	const selectElevator = () => {
@@ -67,7 +76,12 @@ export const Container = ({}: containerProps) => {
 		<StyledWrapper>
 			<StyledButtonList>
 				{Array.from({ length: 15 }, (_, index) => (
-					<Button key={index} value={index + 1} onClick={handleFloorClick} />
+					<Button
+						key={index}
+						value={index + 1}
+						disabled={disabled}
+						onClick={handleFloorClick}
+					/>
 				))}
 			</StyledButtonList>
 
