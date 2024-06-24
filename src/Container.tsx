@@ -23,15 +23,14 @@ export const Container = ({}: containerProps) => {
 		if (selectedElevator) {
 			updateElevatorState(selectedElevator.elevatorId, value);
 		}
-		//이미 선택된 value이면 return
 		if (selectedElevator?.currentFloor === value) return;
-		//모든 엘리베이터가 움직이고 있으면 버튼 disable
 		if (elevatorStates.every(elevator => elevator.isMoving)) {
 			setDisabled(true);
 		} else {
 			setDisabled(false);
 		}
 	};
+
 	const selectElevator = () => {
 		return elevatorStates.find(elevator => !elevator.isMoving);
 	};
@@ -48,7 +47,6 @@ export const Container = ({}: containerProps) => {
 					setElevatorStates(prevStates =>
 						prevStates.map(prev => {
 							if (prev.elevatorId === elevatorId) {
-								// 어느 시점에 나타나는지? 1초 뒤에 나타남
 								return {
 									...prev,
 									currentFloor: destinationFloor,
@@ -103,9 +101,10 @@ const StyledWrapper = styled.div`
 `;
 const StyledButtonList = styled.div`
 	display: flex;
-	gap: 6px;
-	width: 200px;
-	flex-wrap: wrap;
+	width: 150px;
+	flex-wrap: wrap-reverse;
+	gap: 10px;
+	justify-content: space-between;
 `;
 const StyledElevatorList = styled.div`
 	display: flex;
