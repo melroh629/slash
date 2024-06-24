@@ -1,10 +1,22 @@
 import styled from 'styled-components';
 
 interface buttonProps {
-	numbers: number;
+	value: number;
+	onClick: (value: number) => void;
+	disabled?: boolean;
 }
-export const Button = ({ numbers }: buttonProps) => {
-	return <StyledButton>{numbers}</StyledButton>;
+export const Button = ({ value, onClick, disabled }: buttonProps) => {
+	return (
+		<StyledButton
+			onClick={e =>
+				onClick(Number((e.currentTarget as HTMLButtonElement).value))
+			}
+			value={value}
+			disabled={disabled}
+		>
+			{value}
+		</StyledButton>
+	);
 };
 const StyledButton = styled.button`
 	display: flex;
