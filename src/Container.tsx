@@ -19,7 +19,7 @@ export const Container = ({}: containerProps) => {
 	const [disabled, setDisabled] = useState<boolean>(false);
 
 	const handleFloorClick = (value: number) => {
-		const selectedElevator = selectElevator();
+		const selectedElevator = selectElevator(value);
 		if (selectedElevator) {
 			updateElevatorState(selectedElevator.elevatorId, value);
 		}
@@ -31,8 +31,18 @@ export const Container = ({}: containerProps) => {
 		}
 	};
 
-	const selectElevator = () => {
-		return elevatorStates.find(elevator => !elevator.isMoving);
+	const selectElevator = (calledFloor: number) => {
+		const availableElevators = elevatorStates.filter(
+			elevator => !elevator.isMoving
+		);
+		if (availableElevators.length === 0) return null;
+		const closestElevator = availableElevators.reduce((prev, current) => {
+			const prevDistance = Math.abs(prev.currentFloor - calledFloor);
+			const currentDistance = Math.abs(current.currentFloor - calledFloor);
+			return prevDistance < currentDistance ? prev : current;
+		});
+
+		return closestElevator;
 	};
 
 	const updateElevatorState = (
