@@ -11,17 +11,21 @@ interface ElevatorProps {
 }
 
 interface StyledCurrentProps {
-	$bottom: number;
+	$startBottom: number;
+	$endBottom: number;
 	$duration: number;
 }
-export const Elevator = ({ elevatorState }: ElevatorProps) => {
-	const { currentFloor, destinationFloor, isMoving } = elevatorState;
 
-	const calculateBottom = (currentFloor: number, destinationFloor: number) => {
-		return (destinationFloor - currentFloor) * 40;
+export const Elevator = ({ elevatorState }: ElevatorProps) => {
+	const { currentFloor, destinationFloor } = elevatorState;
+
+	const calculateBottom = (floor: number) => {
+		return (floor - 1) * 40;
 	};
 
-	const bottomValue = calculateBottom(currentFloor, destinationFloor ?? 0);
+	const startBottom = calculateBottom(currentFloor);
+	const endBottom =
+		destinationFloor !== null ? calculateBottom(destinationFloor) : startBottom;
 	const duration =
 		destinationFloor !== null ? Math.abs(destinationFloor - currentFloor) : 0;
 
@@ -30,8 +34,11 @@ export const Elevator = ({ elevatorState }: ElevatorProps) => {
 			{Array.from({ length: 15 }, (_, i) => 15 - i).map(number => (
 				<li key={number}>{number}</li>
 			))}
-
-			<StyledCurrent $bottom={bottomValue} $duration={duration} />
+			<StyledCurrent
+				$startBottom={startBottom}
+				$endBottom={endBottom}
+				$duration={duration}
+			/>
 		</StyledElevator>
 	);
 };
@@ -48,21 +55,24 @@ const StyledElevator = styled.ul`
 		background: #f0f0f0;
 	}
 `;
-const move = (bottom: number) => keyframes`
-  0% {
-    bottom: 0;
+
+const move = (startBottom: number, endBottom: number) => keyframes`
+  from {
+    bottom: ${startBottom}px;
   }
-  100% {
-    bottom: ${bottom}px;
+  to {
+    bottom: ${endBottom}px;
   }
 `;
 
 const StyledCurrent = styled.div<StyledCurrentProps>`
 	position: absolute;
-	bottom: ${props => props.$bottom}px;
+	bottom: ${({ $startBottom }) => $startBottom}px;
 	left: 0;
 	width: 40px;
 	height: 40px;
 	border: 5px solid lime;
-	animation: ${props => move(props.$bottom)} ${props => props.$duration}s linear;
+	animation: ${({ $startBottom, $endBottom }) => move($startBottom, $endBottom)}
+		${({ $duration }) => $duration}s linear;
+	animation-fill-mode: forwards;
 `;
