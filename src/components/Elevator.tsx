@@ -2,11 +2,10 @@ import styled, { keyframes } from 'styled-components';
 
 interface ElevatorState {
 	currentFloor: number;
-	destinationFloor: number;
+	destinationFloor: number | null;
 	isMoving: boolean;
 }
 
-// ElevatorProps 인터페이스 정의
 interface ElevatorProps {
 	elevatorState: ElevatorState;
 }
@@ -16,15 +15,15 @@ interface StyledCurrentProps {
 	$duration: number;
 }
 export const Elevator = ({ elevatorState }: ElevatorProps) => {
+	const { currentFloor, destinationFloor, isMoving } = elevatorState;
+
 	const calculateBottom = (currentFloor: number, destinationFloor: number) => {
 		return (destinationFloor - currentFloor) * 40;
 	};
-	const bottomValue = calculateBottom(
-		elevatorState.currentFloor,
-		elevatorState.destinationFloor
-	);
+
+	const bottomValue = calculateBottom(currentFloor, destinationFloor ?? 0);
 	const duration =
-		Math.abs(elevatorState.destinationFloor - elevatorState.currentFloor) * 1;
+		destinationFloor !== null ? Math.abs(destinationFloor - currentFloor) : 0;
 
 	return (
 		<StyledElevator>
