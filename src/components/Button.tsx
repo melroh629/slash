@@ -22,6 +22,8 @@ const StyledButton = styled.button`
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	width: 70px;
+	height: 30px;
 	padding: 10px;
 	border-radius: 5px;
 	cursor: pointer;
@@ -29,4 +31,13 @@ const StyledButton = styled.button`
 	font-weight: bold;
 	background: #fff;
 	border: 1px solid #f0f0f0;
+	&:hover {
+		color: #38761d;
+		border-color: #38761d;
+	}
+	&:disabled {
+		color: #999;
+		border-color: #999;
+		cursor: not-allowed;
+	}
 `;

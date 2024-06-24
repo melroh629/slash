@@ -49,7 +49,9 @@ const StyledElevator = styled.ul`
 	flex-direction: column;
 	li {
 		display: flex;
-		width: 40px;
+		align-items: center;
+		justify-content: center;
+		width: 70px;
 		height: 40px;
 		padding: 10px;
 		background: #f0f0f0;
@@ -69,7 +71,7 @@ const StyledCurrent = styled.div<StyledCurrentProps>`
 	position: absolute;
 	bottom: ${({ $startBottom }) => $startBottom}px;
 	left: 0;
-	width: 40px;
+	width: 70px;
 	height: 40px;
 	border: 5px solid lime;
 	animation: ${({ $startBottom, $endBottom }) => move($startBottom, $endBottom)}

@@ -81,13 +81,19 @@ export const Container = ({}: containerProps) => {
 };
 
 const StyledWrapper = styled.div`
-	padding: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 20px;
+	flex-flow: row-reverse;
 `;
 const StyledButtonList = styled.div`
 	display: flex;
-	gap: 10px;
+	gap: 6px;
+	width: 200px;
+	flex-wrap: wrap;
 `;
 const StyledElevatorList = styled.div`
 	display: flex;
-	gap: 10px;
+	gap: 24px;
 `;
